@@ -10,19 +10,14 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="toolbar">
-        <div class="toolbar-group">
-          <label for="new-day-date" class="toolbar-label">Add day</label>
-          <input id="new-day-date" type="date">
-          <button id="add-day-button" type="button">Add day</button>
-        </div>
-        <button id="add-quest-button" type="button" class="primary-button">Add quest</button>
-      </header>
-
       <main class="planner-board">
         <section class="panel days-panel" aria-labelledby="days-title">
           <div class="panel-header">
             <h2 id="days-title">Days</h2>
+            <div class="panel-header-actions">
+              <input id="new-day-date" type="date" aria-label="Day date">
+              <button id="add-day-button" type="button" class="icon-button primary-icon-button" aria-label="Add day">+</button>
+            </div>
           </div>
           <div id="days-container" class="days-container" aria-live="polite"></div>
         </section>
@@ -30,6 +25,9 @@
         <section class="panel library-panel" aria-labelledby="library-title">
           <div class="panel-header">
             <h2 id="library-title">Quest Library</h2>
+            <div class="panel-header-actions">
+              <button id="add-quest-button" type="button" class="icon-button primary-icon-button" aria-label="Add quest">+</button>
+            </div>
           </div>
           <div id="quest-library" class="quest-library" aria-live="polite"></div>
         </section>
