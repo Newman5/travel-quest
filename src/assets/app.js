@@ -9,26 +9,6 @@ function normalizeState(candidate = { days: [], quests: [] }) {
   return normalizeStateCore(candidate);
 }
 
-function normalizeState(candidate = { days: [], quests: [] }) {
-  return {
-    quests: Array.isArray(candidate.quests) ? candidate.quests.map((quest) => ({
-      id: quest.id || generateId('quest'),
-      name: String(quest.name || 'Untitled quest'),
-      location: String(quest.location || ''),
-      notes: String(quest.notes || ''),
-      link: String(quest.link || '')
-    })) : [],
-    days: Array.isArray(candidate.days) ? candidate.days.map((day) => ({
-      id: day.id || generateId('day'),
-      date: day.date || new Date().toISOString().slice(0, 10),
-      quests: Array.isArray(day.quests) ? day.quests.map((instance) => ({
-        id: instance.id || generateId('instance'),
-        questId: instance.questId || instance.quest || ''
-      })) : []
-    })) : []
-  };
-}
-
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

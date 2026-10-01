@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
-import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'node:url';
 
-function loadDom() {
+async function loadDom() {
   const html = `
     <!doctype html>
     <html>
@@ -33,18 +33,15 @@ function loadDom() {
   global.document = dom.window.document;
   global.localStorage = dom.window.localStorage;
 
-  const scriptContent = fs.readFileSync(path.resolve('src/assets/app.js'), 'utf8');
-  const script = dom.window.document.createElement('script');
-  script.textContent = scriptContent;
-  dom.window.document.body.appendChild(script);
+  await import(pathToFileURL(path.resolve('src/assets/app.js')).href);
   return dom;
 }
 
 const { test } = await import('node:test');
 const { default: assert } = await import('node:assert/strict');
 
-test('dom renders seed data and respects the library vs scheduled instance distinction', () => {
-  const dom = loadDom();
+test('dom renders seed data and respects the library vs scheduled instance distinction', async () => {
+  const dom = await loadDom();
   const app = dom.window.TravelQuestApp;
 
   assert.equal(dom.window.document.querySelectorAll('.day-column').length, 2);
