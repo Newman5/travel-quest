@@ -112,16 +112,20 @@ export function moveScheduledInstance(state, sourceDayId, targetDayId, instanceI
   return state;
 }
 
-export function reorderScheduledInstance(state, dayId, fromIndex, toIndex) {
+export function reorderScheduledInstance(state, dayId, instanceId, targetIndex) {
   const day = state.days.find((entry) => entry.id === dayId);
-  if (!day) return state;
+  if (!day || !instanceId) return state;
 
-  const safeFrom = Math.max(0, Math.min(Number(fromIndex) || 0, day.quests.length - 1));
-  const safeTo = Math.max(0, Math.min(Number(toIndex) || safeFrom, day.quests.length - 1));
+  const currentIndex = day.quests.findIndex((instance) => instance.id === instanceId);
+  if (currentIndex < 0) return state;
 
-  const [item] = day.quests.splice(safeFrom, 1);
+  const [item] = day.quests.splice(currentIndex, 1);
   if (!item) return state;
 
-  day.quests.splice(safeTo, 0, item);
+  const safeTarget = typeof targetIndex === 'number'
+    ? Math.max(0, Math.min(targetIndex, day.quests.length))
+    : day.quests.length;
+
+  day.quests.splice(safeTarget, 0, item);
   return state;
 }

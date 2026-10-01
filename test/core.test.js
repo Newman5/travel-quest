@@ -47,6 +47,6 @@ test('moving and reordering scheduled instances update the correct day state', (
   moveScheduledInstance(state, 'day-1', 'day-2', 'inst-a', 0);
   assert.equal(state.days[1].quests[0].questId, 'qigong');
 
-  reorderScheduledInstance(state, 'day-2', 0, 1);
+  reorderScheduledInstance(state, 'day-2', 'inst-a', 1);
   assert.equal(state.days[1].quests[1].questId, 'qigong');
 });

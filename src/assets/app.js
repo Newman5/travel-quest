@@ -147,7 +147,7 @@ function bindDragAndDrop() {
       group: {
         name: 'travel-quest',
         pull: 'clone',
-        put: false
+        put: true
       },
       sort: false,
       draggable: '.quest-card',
@@ -156,10 +156,12 @@ function bindDragAndDrop() {
       chosenClass: 'sortable-chosen',
       onAdd(event) {
         const sourceDay = event.from && event.from.closest ? event.from.closest('.day-column') : null;
-        if (!sourceDay) return;
+        const draggedInstanceId = event.item && event.item.dataset ? event.item.dataset.instanceId : '';
+
+        if (!sourceDay || !draggedInstanceId) return;
 
         event.item.remove();
-        removeScheduledInstance(sourceDay.dataset.dayId, event.item.dataset.instanceId);
+        removeScheduledInstance(sourceDay.dataset.dayId, draggedInstanceId);
         saveState();
         render();
       }
