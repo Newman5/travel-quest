@@ -1,0 +1,30 @@
+{
+  "name": "travel-quest",
+  "version": "1.0.0",
+  "description": "Travel Quest is a lightweight paper-inspired vacation planner for arranging quest activities across trip days.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx @11ty/eleventy --serve --port 8080",
+    "build": "npx @11ty/eleventy",
+    "start": "npx @11ty/eleventy --serve --port 8080",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Newman5/travel-quest.git"
+  },
+  "keywords": [
+    "travel",
+    "planner",
+    "eleventy",
+    "sortablejs"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "jsdom": "^30.1.1"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
+  }
+}

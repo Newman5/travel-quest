@@ -1,0 +1,79 @@
+---
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Travel Quest</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="toolbar">
+        <div class="toolbar-group">
+          <label for="new-day-date" class="toolbar-label">Add day</label>
+          <input id="new-day-date" type="date">
+          <button id="add-day-button" type="button">Add day</button>
+        </div>
+        <button id="add-quest-button" type="button" class="primary-button">Add quest</button>
+      </header>
+
+      <main class="planner-board">
+        <section class="panel days-panel" aria-labelledby="days-title">
+          <div class="panel-header">
+            <h2 id="days-title">Days</h2>
+          </div>
+          <div id="days-container" class="days-container" aria-live="polite"></div>
+        </section>
+
+        <section class="panel library-panel" aria-labelledby="library-title">
+          <div class="panel-header">
+            <h2 id="library-title">Quest Library</h2>
+          </div>
+          <div id="quest-library" class="quest-library" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="quest-detail-dialog" class="quest-dialog">
+      <div class="dialog-header">
+        <h3 id="quest-detail-title">Quest details</h3>
+        <button id="close-detail-dialog" type="button" class="close-button" aria-label="Close">×</button>
+      </div>
+      <div id="quest-detail-content" class="quest-detail-content"></div>
+    </dialog>
+
+    <dialog id="add-quest-dialog" class="quest-dialog">
+      <div class="dialog-header">
+        <h3>Add quest</h3>
+        <button id="close-add-quest-dialog" type="button" class="close-button" aria-label="Close">×</button>
+      </div>
+      <form id="add-quest-form" class="quest-form">
+        <label>
+          Name
+          <input id="quest-name" name="name" type="text" required>
+        </label>
+        <label>
+          Location
+          <input id="quest-location" name="location" type="text">
+        </label>
+        <label>
+          Notes
+          <textarea id="quest-notes" name="notes" rows="3"></textarea>
+        </label>
+        <label>
+          Link
+          <input id="quest-link" name="link" type="url" placeholder="https://example.com">
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="primary-button">Save quest</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="application/json" id="travel-quest-seed">{{ travelQuestSeed | dump | safe }}</script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="/assets/app.js"></script>
+  </body>
+</html>
