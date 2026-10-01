@@ -21,12 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure GitHub Pages
-        id: pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: eleventy
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -35,6 +29,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: eleventy
 
       - name: Build site
         env:
@@ -54,7 +54,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://newman5.github.io/travel-quest/
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
