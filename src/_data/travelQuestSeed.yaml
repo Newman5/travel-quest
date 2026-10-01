@@ -1,0 +1,43 @@
+days:
+  - id: day-1
+    date: 2026-09-30
+    quests:
+      - id: instance-qigong-1
+        questId: qigong
+  - id: day-2
+    date: 2026-10-01
+    quests:
+      - id: instance-church-1
+        questId: church
+  - id: day-3
+    date: 2026-10-02
+    quests:
+      - id: instance-swimming-1
+        questId: swimming
+
+quests:
+  - id: qigong
+    name: Qigong
+    location: Daan Park
+    notes: Morning session by the lake.
+  - id: church
+    name: Church
+    location: Taipei
+    notes: Community gathering.
+  - id: museum
+    name: Museum
+    location: Zhongshan
+  - id: swimming
+    name: Swimming
+    location: Taipei
+  - id: sunset-hike
+    name: Sunset Hike
+    location: Elephant Mountain
+    notes: Go late afternoon for sunset.
+    link: https://example.com
+  - id: baseball-game
+    name: Baseball Game
+    location: Taipei Dome
+  - id: breakfast-buffet
+    name: Breakfast Buffet
+    location: Hotel Lobby
