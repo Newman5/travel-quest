@@ -38,28 +38,6 @@ button {
   background: rgba(255,255,255,0.18);
 }
 
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--paper);
-  border: 1px solid var(--panel-border);
-  border-bottom: none;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.toolbar-label {
-  font-weight: 700;
-}
-
 input[type="date"], input[type="text"], input[type="url"], textarea {
   border: 1px solid var(--panel-border);
   border-radius: 6px;
@@ -95,15 +73,77 @@ button {
 }
 
 .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   border-bottom: 2px solid var(--panel-border);
   margin-bottom: 0.7rem;
+  padding-bottom: 0.55rem;
 }
 
 .panel-header h2 {
-  margin: 0 0 0.35rem 0;
+  margin: 0;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.panel-header-actions #new-day-date {
+  min-height: 2rem;
+  padding: 0.35rem 0.55rem;
+}
+
+.icon-button {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+  font-weight: 700;
+  transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid rgba(124, 141, 95, 0.95);
+  outline-offset: 2px;
+}
+
+.primary-icon-button {
+  color: #36502c;
+  background: var(--accent-soft);
+  border-color: #b2bc9c;
+}
+
+.primary-icon-button:hover,
+.primary-icon-button:focus-visible {
+  background: #d5e2c5;
+  border-color: #9cab83;
+}
+
+.destructive-icon-button {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #cbbca2;
+}
+
+.destructive-icon-button:hover,
+.destructive-icon-button:focus-visible {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fff7f6;
 }
 
 .days-container {
@@ -134,6 +174,7 @@ button {
 .day-date {
   font-weight: 700;
   line-height: 1.2;
+  padding-right: 0.4rem;
 }
 
 .day-weekday {
@@ -182,7 +223,7 @@ button {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 0.2rem;
-  padding-right: 1.5rem;
+  padding-right: 2rem;
 }
 
 .quest-card .quest-location {
@@ -193,17 +234,8 @@ button {
 
 .quest-delete {
   position: absolute;
-  top: 0.35rem;
-  right: 0.35rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  border: 1px solid var(--panel-border);
-  background: rgba(255,255,255,0.9);
-  color: var(--danger);
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0;
+  top: 0.4rem;
+  right: 0.45rem;
 }
 
 .quest-library {
@@ -299,22 +331,12 @@ button {
     padding: 0.5rem;
   }
 
-  .toolbar {
-    flex-direction: column;
-    align-items: stretch;
+  .panel-header h2 {
+    flex-basis: 100%;
   }
 
-  .toolbar-group {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .toolbar-group input,
-  .toolbar-group button,
-  .primary-button {
-    width: auto;
-    flex: 1;
+  .panel-header-actions #new-day-date {
+    flex: 1 1 10rem;
   }
 
   .days-container {

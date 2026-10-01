@@ -117,7 +117,7 @@ function render() {
             <div class="day-date">${escapeHTML(dateText || '')}</div>
             <div class="day-weekday">${escapeHTML(weekdayText || '')}</div>
           </div>
-          <button type="button" class="remove-day" data-day-id="${escapeHTML(day.id)}">Remove</button>
+          <button type="button" class="remove-day icon-button destructive-icon-button" data-day-id="${escapeHTML(day.id)}" aria-label="Remove day">−</button>
         </div>
         <div class="quest-list" data-day-id="${escapeHTML(day.id)}">
           ${cards || '<div class="day-empty">Drop a quest here</div>'}
@@ -128,7 +128,7 @@ function render() {
 
   library.innerHTML = state.quests.map((quest) => `
     <article class="quest-card" tabindex="0" data-quest-id="${escapeHTML(quest.id)}" data-instance-id="">
-      <button type="button" class="quest-delete" data-quest-id="${escapeHTML(quest.id)}" aria-label="Remove ${escapeHTML(quest.name)}">×</button>
+      <button type="button" class="quest-delete icon-button destructive-icon-button" data-quest-id="${escapeHTML(quest.id)}" aria-label="Delete quest: ${escapeHTML(quest.name || 'Untitled quest')}">×</button>
       <div class="quest-name">${escapeHTML(quest.name || 'Untitled quest')}</div>
       ${quest.location ? `<div class="quest-location">${escapeHTML(quest.location)}</div>` : ''}
     </article>
