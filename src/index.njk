@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Travel Quest</title>
-    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="{{ '/assets/styles.css' | url }}">
   </head>
   <body>
     <div class="app-shell">
@@ -74,6 +74,6 @@
 
     <script type="application/json" id="travel-quest-seed">{{ travelQuestSeed | dump | safe }}</script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-    <script type="module" src="/assets/app.js"></script>
+    <script type="module" src="{{ '/assets/app.js' | url }}"></script>
   </body>
 </html>
