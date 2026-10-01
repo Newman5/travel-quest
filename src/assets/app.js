@@ -2,7 +2,20 @@ import { generateId, addDayToState, addQuestToState, addScheduledInstanceToDay, 
 
 const STORAGE_KEY = 'travel-quest-state-v1';
 const seedScript = document.getElementById('travel-quest-seed');
-const initialSeed = seedScript ? JSON.parse(seedScript.textContent) : { days: [], quests: [] };
+
+function readSeedData() {
+  const rawText = seedScript ? seedScript.textContent : '';
+  if (!rawText || !rawText.trim()) return { days: [], quests: [] };
+
+  try {
+    return JSON.parse(rawText);
+  } catch (error) {
+    console.warn('Unable to parse Travel Quest seed data:', error);
+    return { days: [], quests: [] };
+  }
+}
+
+const initialSeed = readSeedData();
 const state = normalizeState(loadState() || initialSeed);
 
 function normalizeState(candidate = { days: [], quests: [] }) {
