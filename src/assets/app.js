@@ -64,6 +64,7 @@ const uiState = loadUiState();
 let addQuestTargetDayId = '';
 let longPressTimer = null;
 let longPressTriggered = false;
+let longPressStartPoint = null;
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -448,7 +449,7 @@ function archiveDay(dayId) {
 
 function archiveTrip() {
   if (!window.confirm('Archive current trip and clear the active board?')) return;
-  archiveTripInState(state, 'Archived trip');
+  archiveTripInState(state, '');
   saveState();
   render();
 }
@@ -460,7 +461,7 @@ function restoreDay(archivedDayId) {
 }
 
 function restoreTrip(archivedTripId) {
-  if (!window.confirm('Restore this archived trip and replace current board?')) return;
+  if (!window.confirm('Restore this archived trip? Current board data will be replaced unless you archive it first.')) return;
   restoreTripInState(state, archivedTripId);
   saveState();
   render();
@@ -549,6 +550,7 @@ function clearLongPress() {
     clearTimeout(longPressTimer);
     longPressTimer = null;
   }
+  longPressStartPoint = null;
 }
 
 function setupLongPressContextActions() {
@@ -557,6 +559,7 @@ function setupLongPressContextActions() {
 
     longPressTriggered = false;
     clearLongPress();
+    longPressStartPoint = { x: event.clientX, y: event.clientY };
     longPressTimer = setTimeout(() => {
       longPressTriggered = showContextForTarget(event.target);
     }, 500);
@@ -564,7 +567,13 @@ function setupLongPressContextActions() {
 
   document.addEventListener('pointerup', clearLongPress);
   document.addEventListener('pointercancel', clearLongPress);
-  document.addEventListener('pointermove', clearLongPress);
+  document.addEventListener('pointermove', (event) => {
+    if (!longPressTimer || !longPressStartPoint) return;
+    const distance = Math.hypot(event.clientX - longPressStartPoint.x, event.clientY - longPressStartPoint.y);
+    if (distance > 10) {
+      clearLongPress();
+    }
+  });
 
   document.addEventListener('click', (event) => {
     if (longPressTriggered) {
