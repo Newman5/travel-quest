@@ -437,4 +437,19 @@ button {
   .days-container {
     grid-template-columns: 1fr;
   }
+  #quest-library {
+    scrollbar-width: 20px;
+  }
+
+  #quest-library::-webkit-scrollbar {
+    height: 24px;
+  }
+
+  #quest-library::-webkit-scrollbar-thumb {
+    min-width: 48px;
+    border-radius: 12px;
+  }
+  .app-shell {
+    padding-right: 24px;
+  }
 }
