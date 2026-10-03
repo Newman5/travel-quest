@@ -58,6 +58,11 @@ button {
   font-weight: 700;
 }
 
+.secondary-button {
+  background: #fff;
+  border-color: #cbbca2;
+}
+
 .planner-board {
   display: flex;
   flex-direction: column;
@@ -100,6 +105,11 @@ button {
 .panel-header-actions #new-day-date {
   min-height: 2rem;
   padding: 0.35rem 0.55rem;
+}
+
+#library-filter {
+  min-height: 2rem;
+  min-width: 10rem;
 }
 
 .icon-button {
@@ -151,6 +161,9 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.75rem;
   align-items: start;
+  max-height: 55vh;
+  overflow: auto;
+  padding-right: 0.25rem;
 }
 
 .day-column {
@@ -163,12 +176,26 @@ button {
   flex-direction: column;
 }
 
+.day-column.is-collapsed .quest-list {
+  display: none;
+}
+
 .day-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 0.4rem;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 1;
+  padding: 0.2rem 0;
+}
+
+.day-actions {
+  display: flex;
+  gap: 0.35rem;
 }
 
 .day-date {
@@ -243,6 +270,58 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.75rem;
   min-height: 180px;
+  max-height: 45vh;
+  overflow: auto;
+  padding-right: 0.25rem;
+}
+
+.days-jump {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.jump-chip {
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: #fff;
+}
+
+.history-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.history-columns h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.9rem;
+}
+
+.archive-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.5rem 0.6rem;
+}
+
+.archive-item-title {
+  font-weight: 700;
+}
+
+.archive-empty {
+  margin: 0;
+  color: var(--muted);
 }
 
 .quest-dialog {
@@ -324,6 +403,22 @@ button {
 
 .sortable-chosen {
   opacity: 0.9;
+}
+
+.action-menu-actions {
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.action-menu-button {
+  text-align: left;
+}
+
+.action-menu-button.destructive {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fff7f6;
 }
 
 @media (max-width: 640px) {

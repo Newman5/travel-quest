@@ -19,6 +19,7 @@
               <button id="add-day-button" type="button" class="icon-button primary-icon-button" aria-label="Add day">+</button>
             </div>
           </div>
+          <div id="days-jump" class="days-jump" aria-label="Jump to day"></div>
           <div id="days-container" class="days-container" aria-live="polite"></div>
         </section>
 
@@ -26,10 +27,28 @@
           <div class="panel-header">
             <h2 id="library-title">Quest Library</h2>
             <div class="panel-header-actions">
+              <input id="library-filter" type="text" placeholder="Search quests" aria-label="Search quests">
+              <button id="archive-trip-button" type="button" class="secondary-button">Archive trip</button>
               <button id="add-quest-button" type="button" class="icon-button primary-icon-button" aria-label="Add quest">+</button>
             </div>
           </div>
           <div id="quest-library" class="quest-library" aria-live="polite"></div>
+        </section>
+
+        <section class="panel history-panel" aria-labelledby="history-title">
+          <div class="panel-header">
+            <h2 id="history-title">History</h2>
+          </div>
+          <div class="history-columns">
+            <div>
+              <h3>Archived Days</h3>
+              <div id="archived-days-list" class="archive-list"></div>
+            </div>
+            <div>
+              <h3>Archived Trips</h3>
+              <div id="archived-trips-list" class="archive-list"></div>
+            </div>
+          </div>
         </section>
       </main>
     </div>
@@ -44,10 +63,11 @@
 
     <dialog id="add-quest-dialog" class="quest-dialog">
       <div class="dialog-header">
-        <h3>Add quest</h3>
+        <h3 id="add-quest-title">Add quest</h3>
         <button id="close-add-quest-dialog" type="button" class="close-button" aria-label="Close">×</button>
       </div>
       <form id="add-quest-form" class="quest-form">
+        <input id="quest-target-day-id" name="targetDayId" type="hidden" value="">
         <label>
           Name
           <input id="quest-name" name="name" type="text" required>
@@ -68,6 +88,14 @@
           <button type="submit" class="primary-button">Save quest</button>
         </div>
       </form>
+    </dialog>
+
+    <dialog id="action-menu-dialog" class="quest-dialog action-menu-dialog">
+      <div class="dialog-header">
+        <h3 id="action-menu-title">Options</h3>
+        <button id="close-action-menu-dialog" type="button" class="close-button" aria-label="Close">×</button>
+      </div>
+      <div id="action-menu-actions" class="action-menu-actions"></div>
     </dialog>
 
     <script type="application/json" id="travel-quest-seed">{{ travelQuestSeed | dump | safe }}</script>
