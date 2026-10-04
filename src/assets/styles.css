@@ -237,7 +237,6 @@ button {
   min-height: 58px;
   padding: 0.65rem 0.7rem 0.55rem;
   box-shadow: 0 1px 2px var(--shadow);
-  touch-action: none;
   user-select: none;
 }
 
@@ -250,13 +249,35 @@ button {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 0.2rem;
-  padding-right: 2rem;
+  padding-right: 3rem;
 }
 
 .quest-card .quest-location {
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.25;
+  padding-right: 3rem;
+}
+
+.drag-handle {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
 }
 
 .quest-delete {

@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom';
 import path from 'path';
 import { pathToFileURL } from 'node:url';
 
-async function loadDom() {
+async function loadDom(options = {}) {
   const html = `
     <!doctype html>
     <html>
@@ -45,6 +45,12 @@ async function loadDom() {
   global.document = dom.window.document;
   global.localStorage = dom.window.localStorage;
   global.CSS = { escape: (value) => String(value) };
+  if (options.Sortable) {
+    global.Sortable = options.Sortable;
+    dom.window.Sortable = options.Sortable;
+  } else {
+    delete global.Sortable;
+  }
   dom.window.confirm = () => true;
 
   for (const id of ['quest-detail-dialog', 'add-quest-dialog', 'action-menu-dialog']) {
@@ -53,7 +59,8 @@ async function loadDom() {
     dialog.close = function close() { this.open = false; };
   }
 
-  await import(pathToFileURL(path.resolve('src/assets/app.js')).href);
+  const appModuleUrl = pathToFileURL(path.resolve('src/assets/app.js')).href;
+  await import(`${appModuleUrl}?test=${Date.now()}-${Math.random()}`);
   return dom;
 }
 
@@ -66,6 +73,8 @@ test('dom supports quick-add to day, top insertion, and archive/restore', async 
 
   assert.equal(dom.window.document.querySelectorAll('.day-column').length, 2);
   assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card').length, 2);
+  assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card .drag-handle').length, 2);
+  assert.equal(dom.window.document.querySelectorAll('.quest-list .quest-card .drag-handle').length, 1);
 
   const dayId = app.state.days[0].id;
   app.addQuest({ name: 'Tea House', location: 'Maokong' }, dayId);
@@ -87,4 +96,26 @@ test('dom supports quick-add to day, top insertion, and archive/restore', async 
   app.restoreTrip(app.state.archivedTrips[0].id);
   assert.equal(app.state.days.length, 2);
   assert.equal(app.state.quests.length, 3);
+});
+
+test('sortable is configured to drag quests from handle only', async () => {
+  const sortableConfigs = [];
+  class SortableMock {
+    constructor(element, options) {
+      this.element = element;
+      this.options = options;
+      sortableConfigs.push({ element, options });
+    }
+
+    destroy() {}
+  }
+
+  await loadDom({ Sortable: SortableMock });
+
+  assert.equal(sortableConfigs.length, 3);
+  sortableConfigs.forEach(({ options }) => {
+    assert.equal(options.draggable, '.quest-card');
+    assert.equal(options.animation, 150);
+    assert.equal(options.handle, '.drag-handle');
+  });
 });

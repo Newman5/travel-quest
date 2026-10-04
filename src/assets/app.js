@@ -124,6 +124,7 @@ function renderQuestCard(quest, instanceId = '') {
     <article class="quest-card" tabindex="0" data-quest-id="${escapeHTML(quest.id)}" data-instance-id="${escapeHTML(instanceId)}">
       <div class="quest-name">${escapeHTML(quest.name || 'Untitled quest')}</div>
       ${location}
+      <span class="drag-handle" aria-hidden="true">☰</span>
     </article>
   `;
 }
@@ -233,6 +234,7 @@ function render() {
     <article class="quest-card" tabindex="0" data-quest-id="${escapeHTML(quest.id)}" data-instance-id="">
       <div class="quest-name">${escapeHTML(quest.name || 'Untitled quest')}</div>
       ${quest.location ? `<div class="quest-location">${escapeHTML(quest.location)}</div>` : ''}
+      <span class="drag-handle" aria-hidden="true">☰</span>
     </article>
   `).join('');
 
@@ -272,6 +274,7 @@ function bindDragAndDrop() {
       },
       sort: !uiState.libraryFilter.trim(),
       draggable: '.quest-card',
+      handle: '.drag-handle',
       animation: 150,
       ghostClass: 'sortable-ghost',
       chosenClass: 'sortable-chosen',
@@ -304,6 +307,7 @@ function bindDragAndDrop() {
       ghostClass: 'sortable-ghost',
       chosenClass: 'sortable-chosen',
       draggable: '.quest-card',
+      handle: '.drag-handle',
       onAdd(event) {
         const sourceDay = event.from && event.from.closest ? event.from.closest('.day-column') : null;
         const targetDay = event.to && event.to.closest ? event.to.closest('.day-column') : null;
