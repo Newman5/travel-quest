@@ -110,9 +110,10 @@ test('sortable is configured to drag quests from handle only', async () => {
     destroy() {}
   }
 
-  await loadDom({ Sortable: SortableMock });
+  const dom = await loadDom({ Sortable: SortableMock });
+  const dayListCount = dom.window.document.querySelectorAll('.quest-list').length;
 
-  assert.equal(sortableConfigs.length, 3);
+  assert.equal(sortableConfigs.length, dayListCount + 1);
   sortableConfigs.forEach(({ options }) => {
     assert.equal(options.draggable, '.quest-card');
     assert.equal(options.animation, 150);
