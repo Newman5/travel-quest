@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom';
 import path from 'path';
 import { pathToFileURL } from 'node:url';
 
-async function loadDom() {
+async function loadDom(options = {}) {
   const html = `
     <!doctype html>
     <html>
@@ -45,6 +45,12 @@ async function loadDom() {
   global.document = dom.window.document;
   global.localStorage = dom.window.localStorage;
   global.CSS = { escape: (value) => String(value) };
+  if (options.Sortable) {
+    global.Sortable = options.Sortable;
+    dom.window.Sortable = options.Sortable;
+  } else {
+    delete global.Sortable;
+  }
   dom.window.confirm = () => true;
 
   for (const id of ['quest-detail-dialog', 'add-quest-dialog', 'action-menu-dialog']) {
@@ -61,11 +67,32 @@ const { test } = await import('node:test');
 const { default: assert } = await import('node:assert/strict');
 
 test('dom supports quick-add to day, top insertion, and archive/restore', async () => {
-  const dom = await loadDom();
+  const sortableConfigs = [];
+  class SortableMock {
+    constructor(element, options) {
+      this.element = element;
+      this.options = options;
+      sortableConfigs.push({ element, options });
+    }
+
+    destroy() {}
+  }
+
+  const dom = await loadDom({ Sortable: SortableMock });
   const app = dom.window.TravelQuestApp;
+  const dayListCount = dom.window.document.querySelectorAll('.quest-list').length;
 
   assert.equal(dom.window.document.querySelectorAll('.day-column').length, 2);
   assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card').length, 2);
+  assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card .drag-handle').length, 2);
+  assert.equal(dom.window.document.querySelectorAll('.quest-list .quest-card .drag-handle').length, 1);
+  assert.equal(sortableConfigs.length, dayListCount + 1);
+  for (let index = 0; index < sortableConfigs.length; index += 1) {
+    const { options } = sortableConfigs[index];
+    assert.equal(options.draggable, '.quest-card');
+    assert.equal(options.animation, 150);
+    assert.equal(options.handle, '.drag-handle');
+  }
 
   const dayId = app.state.days[0].id;
   app.addQuest({ name: 'Tea House', location: 'Maokong' }, dayId);
