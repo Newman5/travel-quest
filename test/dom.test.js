@@ -59,8 +59,7 @@ async function loadDom(options = {}) {
     dialog.close = function close() { this.open = false; };
   }
 
-  const appModuleUrl = pathToFileURL(path.resolve('src/assets/app.js')).href;
-  await import(`${appModuleUrl}?test=${Date.now()}-${Math.random()}`);
+  await import(pathToFileURL(path.resolve('src/assets/app.js')).href);
   return dom;
 }
 
@@ -68,13 +67,32 @@ const { test } = await import('node:test');
 const { default: assert } = await import('node:assert/strict');
 
 test('dom supports quick-add to day, top insertion, and archive/restore', async () => {
-  const dom = await loadDom();
+  const sortableConfigs = [];
+  class SortableMock {
+    constructor(element, options) {
+      this.element = element;
+      this.options = options;
+      sortableConfigs.push({ element, options });
+    }
+
+    destroy() {}
+  }
+
+  const dom = await loadDom({ Sortable: SortableMock });
   const app = dom.window.TravelQuestApp;
+  const dayListCount = dom.window.document.querySelectorAll('.quest-list').length;
 
   assert.equal(dom.window.document.querySelectorAll('.day-column').length, 2);
   assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card').length, 2);
   assert.equal(dom.window.document.querySelectorAll('#quest-library .quest-card .drag-handle').length, 2);
   assert.equal(dom.window.document.querySelectorAll('.quest-list .quest-card .drag-handle').length, 1);
+  assert.equal(sortableConfigs.length, dayListCount + 1);
+  for (let index = 0; index < sortableConfigs.length; index += 1) {
+    const { options } = sortableConfigs[index];
+    assert.equal(options.draggable, '.quest-card');
+    assert.equal(options.animation, 150);
+    assert.equal(options.handle, '.drag-handle');
+  }
 
   const dayId = app.state.days[0].id;
   app.addQuest({ name: 'Tea House', location: 'Maokong' }, dayId);
@@ -96,27 +114,4 @@ test('dom supports quick-add to day, top insertion, and archive/restore', async 
   app.restoreTrip(app.state.archivedTrips[0].id);
   assert.equal(app.state.days.length, 2);
   assert.equal(app.state.quests.length, 3);
-});
-
-test('sortable is configured to drag quests from handle only', async () => {
-  const sortableConfigs = [];
-  class SortableMock {
-    constructor(element, options) {
-      this.element = element;
-      this.options = options;
-      sortableConfigs.push({ element, options });
-    }
-
-    destroy() {}
-  }
-
-  const dom = await loadDom({ Sortable: SortableMock });
-  const dayListCount = dom.window.document.querySelectorAll('.quest-list').length;
-
-  assert.equal(sortableConfigs.length, dayListCount + 1);
-  sortableConfigs.forEach(({ options }) => {
-    assert.equal(options.draggable, '.quest-card');
-    assert.equal(options.animation, 150);
-    assert.equal(options.handle, '.drag-handle');
-  });
 });
